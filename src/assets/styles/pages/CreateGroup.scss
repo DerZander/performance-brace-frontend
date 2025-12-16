@@ -1,0 +1,148 @@
+@use '../variables.scss' as *;
+
+.create-group-page {
+  min-height: 100vh;
+  padding: $spacing-xl 0;
+  background: $light-gray;
+
+  .back-button {
+    margin-bottom: $spacing-lg;
+    color: $fire-red;
+    font-weight: 600;
+
+    &:hover {
+      background-color: rgba(193, 39, 45, 0.05);
+    }
+  }
+}
+
+.alert-box {
+  margin-bottom: $spacing-lg;
+  border-radius: $border-radius-md;
+}
+
+.form-paper {
+  padding: $spacing-xl;
+  margin-bottom: $spacing-lg;
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow-md;
+
+  .section-title {
+    color: $fire-red;
+    font-weight: 700;
+    margin-bottom: $spacing-lg;
+    padding-bottom: $spacing-md;
+    border-bottom: 3px solid $fire-yellow;
+  }
+}
+
+.add-member-button {
+  margin-top: $spacing-md;
+  padding: $spacing-md;
+  font-weight: 600;
+  border-width: 2px;
+
+  &:hover {
+    border-width: 2px;
+    background-color: rgba(255, 193, 7, 0.05);
+  }
+}
+
+.divider {
+  margin: $spacing-xl 0 $spacing-lg 0;
+}
+
+.members-list-title {
+  color: $dark-gray;
+  font-weight: 600;
+  margin-bottom: $spacing-lg;
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+
+  &::before {
+    content: '';
+    width: 4px;
+    height: 24px;
+    background: linear-gradient(135deg, $fire-red 0%, $fire-yellow 100%);
+    border-radius: $border-radius-sm;
+  }
+}
+
+.member-card {
+  height: 100%;
+  transition: all $transition-medium;
+  border-left: 4px solid $fire-red;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: $shadow-md;
+    border-left-color: $fire-yellow;
+  }
+
+  .member-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: $spacing-sm;
+  }
+
+  .member-name {
+    font-weight: 600;
+    color: $dark-gray;
+    margin-bottom: $spacing-md;
+  }
+
+  .member-info {
+    margin-top: $spacing-sm;
+  }
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: $spacing-md;
+  margin-top: $spacing-lg;
+  padding: $spacing-lg;
+  background: $white;
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow-sm;
+
+  button {
+    min-width: 150px;
+    padding: $spacing-md $spacing-lg;
+    font-weight: 600;
+  }
+}
+
+@media (max-width: $breakpoint-md) {
+  .create-group-page {
+    padding: $spacing-lg 0;
+  }
+
+  .form-paper {
+    padding: $spacing-lg;
+  }
+
+  .page-header {
+    padding: $spacing-lg;
+
+    h1 {
+      font-size: 2rem;
+    }
+  }
+}
+
+@media (max-width: $breakpoint-sm) {
+  .form-actions {
+    flex-direction: column;
+
+    button {
+      width: 100%;
+    }
+  }
+
+  .member-card {
+    margin-bottom: $spacing-md;
+  }
+}
