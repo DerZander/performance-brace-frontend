@@ -162,8 +162,36 @@ npm run build
 ### Port bereits belegt
 
 ```bash
-# Ändere Port in package.json oder beim Start
-npm run dev -- --port 3001
+# Ändere Port in .env
+FRONTEND_PORT=3001
+
+docker-compose down
+docker-compose up -d
+```
+
+## 🐳 Docker Commands
+
+```bash
+# Starten
+docker-compose up -d
+
+# Neu bauen und starten
+docker-compose up -d --build
+
+# Logs anzeigen
+docker-compose logs -f
+
+# Status prüfen
+docker-compose ps
+
+# Stoppen
+docker-compose stop
+
+# Entfernen
+docker-compose down
+
+# Container Shell öffnen
+docker exec -it frontend-app sh
 ```
 
 ## 📚 Scripts
@@ -174,4 +202,6 @@ npm run build        # Production Build
 npm run preview      # Preview Production Build
 npm run lint         # ESLint
 ```
+
+
 
