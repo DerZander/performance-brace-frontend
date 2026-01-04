@@ -4,7 +4,7 @@ class GroupService {
   // Alle Gruppen des Users abrufen
   async getGroups() {
     try {
-      const response = await apiClient.get('/groups');
+      const response = await apiClient.get('/groups/my');
       return response.data;
     } catch (error) {
       throw error.response?.data?.message || 'Fehler beim Laden der Gruppen';
