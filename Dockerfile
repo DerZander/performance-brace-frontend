@@ -1,59 +1,35 @@
-# Build Stage
-FROM node:20-alpine as build
+# Multi-Stage Build
+FROM node:20-alpine AS build
 
 WORKDIR /app
 
-# Copy package files
+# Kopiere package.json und package-lock.json
 COPY package*.json ./
 
-# Install dependencies
-RUN npm ci
+# Installiere Dependencies
+RUN npm ci --silent
 
-# Copy source files
+# Kopiere den restlichen Code
 COPY . .
 
-# Build the application
+# Baue die Anwendung
 RUN npm run build
 
-# Production Stage
-FROM node:20-alpine as production
+# Production Stage mit nginx
+FROM nginx:alpine
 
-WORKDIR /app
+# Kopiere die gebaute App
+COPY --from=build /app/dist /usr/share/nginx/html
 
-# Copy package files
-COPY package*.json ./
+# Kopiere nginx Konfiguration
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Install only production dependencies
-RUN npm ci --only=production
+# Expose Port
+EXPOSE 80
 
-# Copy built files from build stage
-COPY --from=build /app/dist ./dist
+# Health Check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
+  CMD wget --quiet --tries=1 --spider http://localhost/ || exit 1
 
-# Install serve to run the production build
-RUN npm install -g serve
+CMD ["nginx", "-g", "daemon off;"]
 
-# Expose port
-EXPOSE 5173
-
-# Start the application
-CMD ["serve", "-s", "dist", "-l", "5173"]
-
-# Development Stage (default)
-FROM node:20-alpine as development
-
-WORKDIR /app
-
-# Copy package files
-COPY package*.json ./
-
-# Install all dependencies
-RUN npm ci
-
-# Copy source files
-COPY . .
-
-# Expose Vite dev server port
-EXPOSE 5173
-
-# Start development server
-CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]

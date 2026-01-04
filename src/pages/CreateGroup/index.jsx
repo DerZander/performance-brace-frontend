@@ -18,6 +18,10 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Select,
 } from '@mui/material';
 import {
   ArrowBack,
@@ -28,6 +32,7 @@ import {
   Edit,
 } from '@mui/icons-material';
 import groupService from '../../services/groupService';
+import unitService from '../../services/unitService';
 import '../../assets/styles/pages/CreateGroup.scss';
 
 const CreateGroup = () => {
@@ -38,8 +43,10 @@ const CreateGroup = () => {
   const [formData, setFormData] = useState({
     name: '',
     description: '',
+    unitId: '',
   });
 
+  const [units, setUnits] = useState([]);
   const [members, setMembers] = useState([]);
   const [currentMember, setCurrentMember] = useState({
     gender: '',
@@ -64,10 +71,20 @@ const CreateGroup = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    loadUnits();
     if (isEdit) {
       loadGroup();
     }
   }, [id]);
+
+  const loadUnits = async () => {
+    try {
+      const unitsData = await unitService.getAllUnits();
+      setUnits(unitsData);
+    } catch (err) {
+      console.error('Fehler beim Laden der Einheiten:', err);
+    }
+  };
 
   const loadGroup = async () => {
     try {
@@ -75,6 +92,7 @@ const CreateGroup = () => {
       setFormData({
         name: group.name,
         description: group.description || '',
+        unitId: group.unit?.id || '',
       });
       setMembers(group.members || []);
     } catch {
@@ -320,6 +338,29 @@ const CreateGroup = () => {
                   rows={3}
                   variant="outlined"
                 />
+              </Grid>
+
+              <Grid item xs={12}>
+                <FormControl fullWidth variant="outlined">
+                  <InputLabel id="unit-select-label">Einheit (optional)</InputLabel>
+                  <Select
+                    labelId="unit-select-label"
+                    id="unit-select"
+                    name="unitId"
+                    value={formData.unitId}
+                    onChange={handleChange}
+                    label="Einheit (optional)"
+                  >
+                    <MenuItem value="">
+                      <em>Keine Einheit</em>
+                    </MenuItem>
+                    {units.map((unit) => (
+                      <MenuItem key={unit.id} value={unit.id}>
+                        {unit.name} {unit.city && `- ${unit.city}`}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
               </Grid>
             </Grid>
           </Paper>
