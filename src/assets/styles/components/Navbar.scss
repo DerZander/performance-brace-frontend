@@ -1,0 +1,108 @@
+@use '../variables.scss' as *;
+
+.navbar {
+  background: linear-gradient(135deg, $fire-red 0%, $fire-red-dark 100%) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+
+  .navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+    cursor: pointer;
+    transition: opacity $transition-fast;
+
+    &:hover {
+      opacity: 0.9;
+    }
+
+    .brand-icon {
+      font-size: 2.5rem;
+      color: $fire-yellow;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    .brand-title {
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .brand-subtitle {
+      opacity: 0.9;
+      font-size: 0.75rem;
+    }
+  }
+
+  .navbar-menu {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+
+    .nav-button {
+      font-weight: 600;
+      padding: $spacing-sm $spacing-md;
+      border-radius: $border-radius-md;
+      transition: all $transition-fast;
+
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.15);
+      }
+    }
+
+    .user-button {
+      margin-left: $spacing-md;
+    }
+
+    .user-avatar {
+      background: linear-gradient(135deg, $fire-yellow 0%, $fire-yellow-dark 100%);
+      color: $dark-gray;
+      font-weight: 700;
+    }
+  }
+}
+
+.user-menu {
+  .menu-header {
+    padding: $spacing-md $spacing-lg;
+    background: linear-gradient(135deg, rgba(193, 39, 45, 0.05) 0%, rgba(255, 193, 7, 0.05) 100%);
+  }
+
+  .MuiMenuItem-root {
+    padding: $spacing-md $spacing-lg;
+    
+    &:hover {
+      background-color: rgba(193, 39, 45, 0.05);
+    }
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+@media (max-width: $breakpoint-sm) {
+  .navbar {
+    .brand-title {
+      font-size: 1rem;
+    }
+
+    .brand-subtitle {
+      display: none;
+    }
+
+    .nav-button {
+      span {
+        display: none;
+      }
+
+      svg {
+        margin: 0;
+      }
+    }
+  }
+}

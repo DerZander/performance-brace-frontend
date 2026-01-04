@@ -1,0 +1,97 @@
+@use '../variables.scss' as *;
+
+.view-group-page {
+  min-height: 100vh;
+  padding: $spacing-xl 0;
+  background: $light-gray;
+}
+
+.page-header {
+  margin-bottom: $spacing-lg;
+
+  .back-button {
+    color: $dark-gray;
+    
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.04);
+    }
+  }
+}
+
+.group-info-paper {
+  padding: $spacing-xl;
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow-md;
+  margin-bottom: $spacing-lg;
+
+  .group-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: $spacing-md;
+    flex-wrap: wrap;
+  }
+
+  .info-item {
+    padding: $spacing-md;
+    background: $light-gray;
+    border-radius: $border-radius-md;
+    min-height: 70px;
+  }
+}
+
+.members-paper {
+  padding: $spacing-xl;
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow-md;
+
+  .members-title {
+    color: $fire-red;
+    font-weight: 700;
+    margin-bottom: $spacing-lg;
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+
+    &::before {
+      content: '';
+      width: 4px;
+      height: 28px;
+      background: linear-gradient(135deg, $fire-red 0%, $fire-yellow 100%);
+      border-radius: $border-radius-sm;
+    }
+  }
+}
+
+.member-card {
+  height: 100%;
+  transition: all $transition-medium;
+  border-left: 4px solid $fire-red;
+  background: $white;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: $shadow-md;
+    border-left-color: $fire-yellow;
+  }
+
+  .member-avatar {
+    background: linear-gradient(135deg, $fire-red 0%, $fire-red-light 100%);
+  }
+}
+
+@media (max-width: $breakpoint-md) {
+  .view-group-page {
+    padding: $spacing-lg 0;
+  }
+
+  .group-info-paper,
+  .members-paper {
+    padding: $spacing-lg;
+  }
+
+  .group-header {
+    flex-direction: column;
+    align-items: stretch !important;
+  }
+}

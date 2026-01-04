@@ -1,35 +1,121 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import { theme } from './assets/styles/theme';
+import { AuthProvider } from './context/AuthContext';
+import PrivateRoute from './components/PrivateRoute';
+import Navbar from './components/Navbar';
+import Login from './pages/Login';
+import Dashboard from './pages/Dashboard';
+import CreateGroup from './pages/CreateGroup';
+import ViewGroup from './pages/ViewGroup';
+import AllGroups from './pages/AllGroups';
+import ManageUsers from './pages/ManageUsers';
+import ManageUnits from './pages/ManageUnits';
+import Profile from './pages/Profile';
+import GitHubCallback from './pages/GitHubCallback';
+import OAuth2Callback from './pages/OAuth2Callback';
+import './assets/styles/global.scss';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <AuthProvider>
+        <Router>
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/auth/github/callback" element={<GitHubCallback />} />
+            <Route path="/oauth2/callback" element={<OAuth2Callback />} />
+            
+            <Route
+              path="/dashboard"
+              element={
+                <PrivateRoute>
+                  <Navbar />
+                  <Dashboard />
+                </PrivateRoute>
+              }
+            />
+
+            <Route
+              path="/all-groups"
+              element={
+                <PrivateRoute>
+                  <Navbar />
+                  <AllGroups />
+                </PrivateRoute>
+              }
+            />
+
+            <Route
+              path="/admin/users"
+              element={
+                <PrivateRoute>
+                  <Navbar />
+                  <ManageUsers />
+                </PrivateRoute>
+              }
+            />
+
+            <Route
+              path="/admin/units"
+              element={
+                <PrivateRoute>
+                  <Navbar />
+                  <ManageUnits />
+                </PrivateRoute>
+              }
+            />
+
+            <Route
+              path="/profile"
+              element={
+                <PrivateRoute>
+                  <Navbar />
+                  <Profile />
+                </PrivateRoute>
+              }
+            />
+
+            <Route
+              path="/groups/create"
+              element={
+                <PrivateRoute>
+                  <Navbar />
+                  <CreateGroup />
+                </PrivateRoute>
+              }
+            />
+            
+            <Route
+              path="/groups/:id"
+              element={
+                <PrivateRoute>
+                  <Navbar />
+                  <ViewGroup />
+                </PrivateRoute>
+              }
+            />
+            
+            <Route
+              path="/groups/edit/:id"
+              element={
+                <PrivateRoute>
+                  <Navbar />
+                  <CreateGroup />
+                </PrivateRoute>
+              }
+            />
+            
+            <Route path="/" element={<Navigate to="/dashboard" />} />
+            <Route path="*" element={<Navigate to="/dashboard" />} />
+          </Routes>
+        </Router>
+      </AuthProvider>
+    </ThemeProvider>
+  );
 }
 
-export default App
+export default App;

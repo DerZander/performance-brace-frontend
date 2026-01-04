@@ -1,0 +1,20 @@
+.profile-page {
+  .MuiPaper-root {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+  }
+
+  .MuiCard-root {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .MuiButton-contained {
+    text-transform: none;
+    font-weight: 600;
+  }
+
+  .MuiChip-root {
+    font-weight: 600;
+  }
+}
+

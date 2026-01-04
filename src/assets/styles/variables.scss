@@ -1,0 +1,45 @@
+// Feuerwehr Farben
+$fire-red: #C1272D;
+$fire-red-light: #E53935;
+$fire-red-dark: #9A1F23;
+
+$fire-yellow: #FFC107;
+$fire-yellow-light: #FFD54F;
+$fire-yellow-dark: #FFA000;
+
+$dark-gray: #212121;
+$medium-gray: #757575;
+$light-gray: #F5F5F5;
+
+$white: #FFFFFF;
+$black: #000000;
+
+// Spacing
+$spacing-xs: 4px;
+$spacing-sm: 8px;
+$spacing-md: 16px;
+$spacing-lg: 24px;
+$spacing-xl: 32px;
+$spacing-xxl: 48px;
+
+// Border Radius
+$border-radius-sm: 4px;
+$border-radius-md: 8px;
+$border-radius-lg: 12px;
+
+// Shadows
+$shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+$shadow-md: 0 4px 8px rgba(0, 0, 0, 0.15);
+$shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.2);
+
+// Transitions
+$transition-fast: 0.2s ease;
+$transition-medium: 0.3s ease;
+$transition-slow: 0.5s ease;
+
+// Breakpoints
+$breakpoint-xs: 480px;
+$breakpoint-sm: 768px;
+$breakpoint-md: 1024px;
+$breakpoint-lg: 1280px;
+$breakpoint-xl: 1920px;
