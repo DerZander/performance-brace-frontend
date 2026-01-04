@@ -18,13 +18,14 @@ import {
   Add,
   AccountCircle,
   Logout,
+  Groups as GroupsIcon,
 } from '@mui/icons-material';
 import { useAuth } from '../../context/AuthContext';
 import '../../assets/styles/components/Navbar.scss';
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const { user, logout } = useAuth();
+  const { user, logout, canManageAll } = useAuth();
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleMenu = (event) => {
@@ -65,6 +66,17 @@ const Navbar = () => {
           >
             Dashboard
           </Button>
+
+          {canManageAll() && (
+            <Button
+              color="inherit"
+              startIcon={<GroupsIcon />}
+              onClick={() => navigate('/all-groups')}
+              className="nav-button"
+            >
+              Alle Gruppen
+            </Button>
+          )}
 
           <Button
             color="inherit"

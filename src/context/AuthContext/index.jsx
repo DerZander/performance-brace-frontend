@@ -19,31 +19,32 @@ export const AuthProvider = ({ children }) => {
     // Prüfe, ob User bereits eingeloggt ist
     const initAuth = async () => {
       try {
-        const currentUser = authService.getCurrentUser();
         const token = authService.getToken();
+        const cachedUser = authService.getCurrentUser();
 
-        if (currentUser && token) {
-          // Validiere Token beim Laden - wenn Backend nicht läuft, überspringen
-          try {
-            const isValid = await authService.validateToken();
-            if (isValid) {
-              setUser(currentUser);
-            } else {
-              // Token ungültig, logout
-              authService.logout();
-              setUser(null);
-            }
-          } catch (error) {
-            // Backend nicht erreichbar oder Fehler - nutze gespeicherte Daten
-            console.warn('Token-Validierung fehlgeschlagen, verwende LocalStorage:', error);
-            setUser(currentUser);
-          }
+        // Wenn Token UND User vorhanden sind, sofort laden
+        if (token && cachedUser) {
+          console.log('User aus Cache geladen:', cachedUser);
+          setUser(cachedUser);
+          setLoading(false);
+
+          // Optional: Im Hintergrund frische Daten holen (ohne await)
+          authService.getCurrentUserFromServer()
+            .then(freshUserData => {
+              console.log('Frische User-Daten geladen:', freshUserData);
+              setUser(freshUserData);
+            })
+            .catch(error => {
+              console.warn('Fehler beim Laden frischer Daten, behalte Cache:', error);
+              // Bei Fehler einfach gecachte Daten behalten
+            });
+        } else {
+          // Kein Token oder User - nicht eingeloggt
+          console.log('Kein Token oder User gefunden');
+          setLoading(false);
         }
       } catch (error) {
-        console.error('Fehler beim Initialisieren der Authentifizierung:', error);
-        authService.logout();
-        setUser(null);
-      } finally {
+        console.error('Auth-Initialisierung fehlgeschlagen:', error);
         setLoading(false);
       }
     };
@@ -60,7 +61,10 @@ export const AuthProvider = ({ children }) => {
       lastName: data.lastName,
       role: data.role
     };
+    // User sofort setzen
     setUser(userData);
+    // Sicherstellen dass es in localStorage ist
+    localStorage.setItem('user', JSON.stringify(userData));
     return data;
   };
 
@@ -73,7 +77,10 @@ export const AuthProvider = ({ children }) => {
       lastName: data.lastName,
       role: data.role
     };
+    // User sofort setzen
     setUser(userData);
+    // Sicherstellen dass es in localStorage ist
+    localStorage.setItem('user', JSON.stringify(userData));
     return data;
   };
 
@@ -93,6 +100,17 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // Rollen-Hilfsfunktionen
+  const hasRole = (roles) => {
+    if (!user || !user.role) return false;
+    return roles.includes(user.role);
+  };
+
+  const isAdmin = () => hasRole(['ADMIN']);
+  const isKreisjugendwart = () => hasRole(['KREISJUGENDWART']);
+  const isJugendwart = () => hasRole(['JUGENDWART']);
+  const canManageAll = () => hasRole(['ADMIN', 'KREISJUGENDWART']);
+
   const value = {
     user,
     loading,
@@ -101,6 +119,11 @@ export const AuthProvider = ({ children }) => {
     logout,
     refreshUser,
     isAuthenticated: !!user,
+    hasRole,
+    isAdmin,
+    isKreisjugendwart,
+    isJugendwart,
+    canManageAll,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

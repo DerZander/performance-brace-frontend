@@ -9,6 +9,7 @@ import Navbar from './components/Navbar';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import CreateGroup from './pages/CreateGroup';
+import AllGroups from './pages/AllGroups';
 import GitHubCallback from './pages/GitHubCallback';
 import OAuth2Callback from './pages/OAuth2Callback';
 import './assets/styles/global.scss';
@@ -33,7 +34,17 @@ function App() {
                 </PrivateRoute>
               }
             />
-            
+
+            <Route
+              path="/all-groups"
+              element={
+                <PrivateRoute>
+                  <Navbar />
+                  <AllGroups />
+                </PrivateRoute>
+              }
+            />
+
             <Route
               path="/groups/create"
               element={
