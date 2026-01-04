@@ -1,4 +1,4 @@
-# Multi-Stage Build
+# Multi-Stage Build für Production (Plesk)
 FROM node:20-alpine AS build
 
 WORKDIR /app
@@ -12,21 +12,21 @@ RUN npm ci --silent
 # Kopiere den restlichen Code
 COPY . .
 
-# Build Arguments für Vite (optional, mit Default)
-ARG VITE_API_URL=http://localhost:8080/api
+# Build Arguments für Vite
+ARG VITE_API_URL
 ENV VITE_API_URL=${VITE_API_URL}
 
 # Baue die Anwendung
 RUN npm run build
 
 # Production Stage mit nginx
-FROM nginx:alpine
+FROM nginx:alpine AS production
 
 # Kopiere die gebaute App
 COPY --from=build /app/dist /usr/share/nginx/html
 
-# Kopiere nginx Konfiguration
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Kopiere nginx Konfiguration (standalone version ohne Backend-Proxy)
+COPY nginx-standalone.conf /etc/nginx/conf.d/default.conf
 
 # Expose Port
 EXPOSE 80
