@@ -12,7 +12,7 @@ services:
     container_name: frontend-app
     restart: unless-stopped
     ports:
-      - "${FRONTEND_PORT:-3000}:80"
+      - "${FRONTEND_PORT:-3001}:80"
     networks:
       - frontend-network
     healthcheck:
