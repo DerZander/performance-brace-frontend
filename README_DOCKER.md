@@ -1,13 +1,52 @@
 # Frontend - Performance Brace
 
+## 🐳 Docker Compose (Standalone)
+
+Das Frontend kann jetzt eigenständig mit Docker Compose gestartet werden!
+
+### Schnellstart:
+
+```bash
+# Im frontend/ Verzeichnis
+
+# 1. .env erstellen (optional)
+cp .env.example .env
+
+# 2. Starten (baut und startet Frontend)
+docker-compose up -d
+
+# 3. Logs anzeigen
+docker-compose logs -f
+
+# 4. Stoppen
+docker-compose down
+```
+
+### Was wird gestartet:
+- ✅ **React Frontend mit nginx** (Port 3000)
+
+### Umgebungsvariablen:
+
+Erstelle eine `.env` Datei im frontend/ Verzeichnis (siehe `.env.example`):
+
+```env
+FRONTEND_PORT=3000
+VITE_API_URL=http://localhost:8080/api
+```
+
+### URLs nach dem Start:
+- **Frontend**: http://localhost:3000
+
+---
+
 ## ⚠️ WICHTIG
 
-**Verwende NICHT die alten docker-compose Dateien in diesem Verzeichnis!**
-
-Die Hauptkonfiguration befindet sich im Root-Verzeichnis:
+**Für Plesk Production:** Verwende die docker-compose Dateien im Root-Verzeichnis:
 - `../docker-compose.yml` - Standard (mit Backend im Docker-Netzwerk)
 - `../docker-compose.prod.yml` - Für Plesk Production (standalone)
 - `../docker-compose.dev.yml` - Für lokale Entwicklung
+
+---
 
 ## 📁 Dockerfiles
 
