@@ -18,6 +18,12 @@ const adminService = {
     const response = await api.delete(`/admin/users/${userId}`);
     return response.data;
   },
+
+  // Einheit einem Benutzer zuweisen
+  updateUserUnit: async (userId, unitId) => {
+    const response = await api.put(`/admin/users/${userId}/unit`, { unitId });
+    return response.data;
+  },
 };
 
 export default adminService;

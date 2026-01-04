@@ -9,7 +9,11 @@ import Navbar from './components/Navbar';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import CreateGroup from './pages/CreateGroup';
+import ViewGroup from './pages/ViewGroup';
 import AllGroups from './pages/AllGroups';
+import ManageUsers from './pages/ManageUsers';
+import ManageUnits from './pages/ManageUnits';
+import Profile from './pages/Profile';
 import GitHubCallback from './pages/GitHubCallback';
 import OAuth2Callback from './pages/OAuth2Callback';
 import './assets/styles/global.scss';
@@ -46,11 +50,51 @@ function App() {
             />
 
             <Route
+              path="/admin/users"
+              element={
+                <PrivateRoute>
+                  <Navbar />
+                  <ManageUsers />
+                </PrivateRoute>
+              }
+            />
+
+            <Route
+              path="/admin/units"
+              element={
+                <PrivateRoute>
+                  <Navbar />
+                  <ManageUnits />
+                </PrivateRoute>
+              }
+            />
+
+            <Route
+              path="/profile"
+              element={
+                <PrivateRoute>
+                  <Navbar />
+                  <Profile />
+                </PrivateRoute>
+              }
+            />
+
+            <Route
               path="/groups/create"
               element={
                 <PrivateRoute>
                   <Navbar />
                   <CreateGroup />
+                </PrivateRoute>
+              }
+            />
+            
+            <Route
+              path="/groups/:id"
+              element={
+                <PrivateRoute>
+                  <Navbar />
+                  <ViewGroup />
                 </PrivateRoute>
               }
             />

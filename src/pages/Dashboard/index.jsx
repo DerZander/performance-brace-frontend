@@ -117,6 +117,18 @@ const GroupRow = ({ group, onEdit, onDelete }) => {
                               </Typography>
                             </Box>
                             
+                            {member.gender && (
+                              <Typography variant="body2" color="textSecondary">
+                                Geschlecht: {member.gender === 'MALE' ? 'Männlich' : member.gender === 'FEMALE' ? 'Weiblich' : 'Divers'}
+                              </Typography>
+                            )}
+
+                            {member.memberId && (
+                              <Typography variant="body2" color="textSecondary">
+                                Mitglieds-ID: {member.memberId}
+                              </Typography>
+                            )}
+
                             <Box display="flex" alignItems="center" gap={1}>
                               <Cake fontSize="small" color="action" />
                               <Typography variant="body2" color="textSecondary">
@@ -131,12 +143,26 @@ const GroupRow = ({ group, onEdit, onDelete }) => {
                               </Typography>
                             </Box>
 
-                            <Box display="flex" alignItems="center" gap={1}>
-                              <LocationCity fontSize="small" color="action" />
+                            {member.cityOfBirth && (
+                              <Box display="flex" alignItems="center" gap={1}>
+                                <LocationCity fontSize="small" color="action" />
+                                <Typography variant="body2" color="textSecondary">
+                                  {member.cityOfBirth}
+                                </Typography>
+                              </Box>
+                            )}
+
+                            {member.membershipStartDate && (
                               <Typography variant="body2" color="textSecondary">
-                                {member.cityOfBirth}
+                                Mitglied seit: {new Date(member.membershipStartDate).toLocaleDateString('de-DE')}
                               </Typography>
-                            </Box>
+                            )}
+
+                            {member.address && (member.address.street || member.address.city) && (
+                              <Typography variant="body2" color="textSecondary">
+                                Adresse: {member.address.street} {member.address.houseNumber}, {member.address.postalCode} {member.address.city}
+                              </Typography>
+                            )}
                           </Stack>
                         </CardContent>
                       </Card>

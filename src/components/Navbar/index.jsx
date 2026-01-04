@@ -15,17 +15,18 @@ import {
 import {
   LocalFireDepartment,
   Dashboard as DashboardIcon,
-  Add,
   AccountCircle,
   Logout,
   Groups as GroupsIcon,
+  PeopleAlt,
+  Business,
 } from '@mui/icons-material';
 import { useAuth } from '../../context/AuthContext';
 import '../../assets/styles/components/Navbar.scss';
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const { user, logout, canManageAll } = useAuth();
+  const { user, logout, canManageAll, isAdmin } = useAuth();
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleMenu = (event) => {
@@ -64,7 +65,7 @@ const Navbar = () => {
             onClick={() => navigate('/dashboard')}
             className="nav-button"
           >
-            Dashboard
+            Meine Gruppen
           </Button>
 
           {canManageAll() && (
@@ -78,14 +79,26 @@ const Navbar = () => {
             </Button>
           )}
 
-          <Button
-            color="inherit"
-            startIcon={<Add />}
-            onClick={() => navigate('/groups/create')}
-            className="nav-button"
-          >
-            Neue Gruppe
-          </Button>
+          {isAdmin() && (
+            <>
+              <Button
+                color="inherit"
+                startIcon={<PeopleAlt />}
+                onClick={() => navigate('/admin/users')}
+                className="nav-button"
+              >
+                Benutzer
+              </Button>
+              <Button
+                color="inherit"
+                startIcon={<Business />}
+                onClick={() => navigate('/admin/units')}
+                className="nav-button"
+              >
+                Einheiten
+              </Button>
+            </>
+          )}
 
           <IconButton
             size="large"
@@ -113,7 +126,7 @@ const Navbar = () => {
               </Typography>
             </Box>
             <Divider />
-            <MenuItem onClick={handleClose}>
+            <MenuItem onClick={() => { navigate('/profile'); handleClose(); }}>
               <AccountCircle fontSize="small" style={{ marginRight: 8 }} />
               Profil
             </MenuItem>

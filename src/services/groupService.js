@@ -1,7 +1,17 @@
 import apiClient from './api';
 
 class GroupService {
-  // Alle Gruppen abrufen (für ADMIN & KREISJUGENDWART)
+  // Alle Gruppen abrufen (für Admins und Kreisjugendwarte, wenn sie auf "Alle Gruppen" klicken)
+  async getAllGroupsForAdmins() {
+    try {
+      const response = await apiClient.get('/groups/all');
+      return response.data;
+    } catch (error) {
+      throw error.response?.data?.message || 'Fehler beim Laden aller Gruppen';
+    }
+  }
+
+  // Alle Gruppen des aktuellen Users abrufen
   async getAllGroups() {
     try {
       const response = await apiClient.get('/groups');

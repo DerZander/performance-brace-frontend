@@ -29,7 +29,7 @@ import {
 import './AllGroups.scss';
 
 const AllGroups = () => {
-  const { canManageAll, user } = useAuth();
+  const { canManageAll } = useAuth();
   const navigate = useNavigate();
   const [groups, setGroups] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -49,7 +49,7 @@ const AllGroups = () => {
     try {
       setLoading(true);
       setError('');
-      const data = await groupService.getAllGroups();
+      const data = await groupService.getAllGroupsForAdmins();
       setGroups(data);
     } catch (err) {
       setError('Fehler beim Laden der Gruppen: ' + (err.response?.data?.message || err.message));
