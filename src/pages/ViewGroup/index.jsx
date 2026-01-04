@@ -174,6 +174,16 @@ const ViewGroup = () => {
             <Grid item xs={12} sm={6} md={3}>
               <Box className="info-item">
                 <Typography variant="caption" color="textSecondary">
+                  Einheit
+                </Typography>
+                <Typography variant="body1" fontWeight={600}>
+                  {group.unit ? `${group.unit.name}${group.unit.city ? ` - ${group.unit.city}` : ''}` : 'Keine Einheit'}
+                </Typography>
+              </Box>
+            </Grid>
+            <Grid item xs={12} sm={6} md={3}>
+              <Box className="info-item">
+                <Typography variant="caption" color="textSecondary">
                   Status
                 </Typography>
                 <Chip

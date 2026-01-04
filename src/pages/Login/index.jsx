@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Container,
@@ -11,6 +11,10 @@ import {
   InputAdornment,
   IconButton,
   Stack,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from '@mui/material';
 import {
   Visibility,
@@ -18,8 +22,10 @@ import {
   Email,
   Lock,
   LocalFireDepartment,
+  Business,
 } from '@mui/icons-material';
 import { useAuth } from '../../context/AuthContext';
+import apiClient from '../../services/api';
 import '../../assets/styles/pages/Login.scss';
 
 const Login = () => {
@@ -33,9 +39,28 @@ const Login = () => {
     password: '',
     firstName: '',
     lastName: '',
+    unitId: '',
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [units, setUnits] = useState([]);
+
+  // Units laden, wenn auf Registrierung gewechselt wird
+  useEffect(() => {
+    if (isRegister) {
+      loadUnits();
+    }
+  }, [isRegister]);
+
+  const loadUnits = async () => {
+    try {
+      const response = await apiClient.get('/units/public');
+      setUnits(response.data);
+    } catch (err) {
+      console.error('Fehler beim Laden der Einheiten:', err);
+      // Fehler ignorieren - Unit-Auswahl ist optional
+    }
+  };
 
   const handleChange = (e) => {
     setFormData({
@@ -52,12 +77,13 @@ const Login = () => {
 
     try {
       if (isRegister) {
-        // Registrierung benötigt: email, password, firstName, lastName
+        // Registrierung benötigt: email, password, firstName, lastName, unitId
         await register(
           formData.email,
           formData.password,
           formData.firstName,
-          formData.lastName
+          formData.lastName,
+          formData.unitId || null
         );
       } else {
         // Login benötigt nur: email, password
@@ -115,6 +141,32 @@ const Login = () => {
                     variant="outlined"
                   />
                 </Stack>
+              )}
+
+              {isRegister && (
+                <FormControl fullWidth variant="outlined">
+                  <InputLabel>Einheit (optional)</InputLabel>
+                  <Select
+                    name="unitId"
+                    value={formData.unitId}
+                    onChange={handleChange}
+                    label="Einheit (optional)"
+                    startAdornment={
+                      <InputAdornment position="start">
+                        <Business />
+                      </InputAdornment>
+                    }
+                  >
+                    <MenuItem value="">
+                      <em>Keine Einheit</em>
+                    </MenuItem>
+                    {units.map((unit) => (
+                      <MenuItem key={unit.id} value={unit.id}>
+                        {unit.name} {unit.city && `(${unit.city})`}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
               )}
 
               <TextField
@@ -189,6 +241,7 @@ const Login = () => {
                     password: '',
                     firstName: '',
                     lastName: '',
+                    unitId: '',
                   });
                 }}
                 className="toggle-button"

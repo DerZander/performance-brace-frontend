@@ -221,6 +221,11 @@ const AllGroups = () => {
                         minute: '2-digit',
                       })}
                     </Typography>
+                    {group.unit && (
+                      <Typography variant="caption" color="text.secondary">
+                        <strong>Einheit:</strong> {group.unit.name}{group.unit.city ? ` - ${group.unit.city}` : ''}
+                      </Typography>
+                    )}
                   </Box>
 
                   <Box className="members-preview">

@@ -28,14 +28,21 @@ class AuthService {
   }
 
   // Registrierung
-  async register(email, password, firstName, lastName) {
+  async register(email, password, firstName, lastName, unitId = null) {
     try {
-      const response = await apiClient.post('/auth/register', {
+      const requestBody = {
         email,
         password,
         firstName,
         lastName,
-      });
+      };
+
+      // Füge unitId nur hinzu, wenn sie nicht null ist
+      if (unitId) {
+        requestBody.unitId = unitId;
+      }
+
+      const response = await apiClient.post('/auth/register', requestBody);
 
       if (response.data.token) {
         localStorage.setItem('authToken', response.data.token);
