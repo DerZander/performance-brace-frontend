@@ -1,0 +1,31 @@
+# Docker Compose für Frontend (standalone)
+# Kann direkt im frontend/ Verzeichnis ausgeführt werden
+
+services:
+  # React Frontend mit Nginx
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: ${VITE_API_URL:-http://localhost:8080/api}
+    container_name: frontend-app
+    restart: unless-stopped
+    ports:
+      - "${FRONTEND_PORT:-3000}:80"
+    networks:
+      - frontend-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    environment:
+      # Nginx Konfiguration
+      - NGINX_ENTRYPOINT_QUIET_LOGS=1
+
+networks:
+  frontend-network:
+    driver: bridge
+
