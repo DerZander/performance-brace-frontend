@@ -123,7 +123,7 @@ const CreateGroup = () => {
         ...formData,
         members,
       };
-
+      console.log('Submitting group data:', groupData);
       if (isEdit) {
         await groupService.updateGroup(id, groupData);
         setSuccess('Gruppe erfolgreich aktualisiert');

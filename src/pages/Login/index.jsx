@@ -7,7 +7,6 @@ import {
   Button,
   Typography,
   Box,
-  Divider,
   Alert,
   InputAdornment,
   IconButton,
@@ -18,19 +17,15 @@ import {
   VisibilityOff,
   Email,
   Lock,
-  Google,
-  Facebook,
-  GitHub,
   LocalFireDepartment,
 } from '@mui/icons-material';
 import { useAuth } from '../../context/AuthContext';
 import '../../assets/styles/pages/Login.scss';
-import apiClient from '../../services/api';
 
 const Login = () => {
   const navigate = useNavigate();
-  const { login, loginWithGoogle, loginWithFacebook, loginWithGitHub } = useAuth();
-  
+  const { login, register } = useAuth();
+
   const [isRegister, setIsRegister] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
@@ -57,27 +52,22 @@ const Login = () => {
 
     try {
       if (isRegister) {
-        await login(formData.email, formData.password, formData.firstName, formData.lastName);
+        // Registrierung benötigt: email, password, firstName, lastName
+        await register(
+          formData.email,
+          formData.password,
+          formData.firstName,
+          formData.lastName
+        );
       } else {
+        // Login benötigt nur: email, password
+        console.log('Logging in with:', formData);
         await login(formData.email, formData.password);
       }
       navigate('/dashboard');
     } catch (err) {
       setError(err.toString());
     } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleSocialLogin = async (provider) => {
-    setError('');
-    setLoading(true);
-    
-    try {
-      // Weiterleitung zum OAuth2 Endpunkt
-      window.location.href = `http://localhost:8080/api/oauth2/authorization/${provider}`;
-    } catch (err) {
-      setError(err.response?.data?.message || `${provider} Login fehlgeschlagen`);
       setLoading(false);
     }
   };
@@ -136,6 +126,7 @@ const Login = () => {
                 onChange={handleChange}
                 required
                 variant="outlined"
+                helperText={isRegister ? "Gültige E-Mail-Adresse" : ""}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -154,6 +145,7 @@ const Login = () => {
                 onChange={handleChange}
                 required
                 variant="outlined"
+                helperText={isRegister ? "Mindestens 6 Zeichen" : ""}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -191,6 +183,13 @@ const Login = () => {
                 onClick={() => {
                   setIsRegister(!isRegister);
                   setError('');
+                  // Reset form when switching
+                  setFormData({
+                    email: '',
+                    password: '',
+                    firstName: '',
+                    lastName: '',
+                  });
                 }}
                 className="toggle-button"
               >
@@ -199,47 +198,6 @@ const Login = () => {
                   : 'Noch kein Konto? Jetzt registrieren'}
               </Button>
             </form>
-
-            <Divider className="login-divider">
-              <Typography variant="body2" color="textSecondary">
-                Oder anmelden mit
-              </Typography>
-            </Divider>
-
-            <Stack spacing={2} className="social-buttons">
-              <Button
-                fullWidth
-                variant="outlined"
-                startIcon={<Google />}
-                onClick={() => handleSocialLogin('google')}
-                disabled={loading}
-                className="social-button google"
-              >
-                Google
-              </Button>
-
-              <Button
-                fullWidth
-                variant="outlined"
-                startIcon={<Facebook />}
-                onClick={() => handleSocialLogin('facebook')}
-                disabled={loading}
-                className="social-button facebook"
-              >
-                Facebook
-              </Button>
-
-              <Button
-                fullWidth
-                variant="outlined"
-                startIcon={<GitHub />}
-                onClick={() => handleSocialLogin('github')}
-                disabled={loading}
-                className="social-button github"
-              >
-                GitHub
-              </Button>
-            </Stack>
           </Paper>
         </Box>
       </Container>

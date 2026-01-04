@@ -17,40 +17,63 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     // Prüfe, ob User bereits eingeloggt ist
-    const currentUser = authService.getCurrentUser();
-    if (currentUser) {
-      setUser(currentUser);
-    }
-    setLoading(false);
+    const initAuth = async () => {
+      try {
+        const currentUser = authService.getCurrentUser();
+        const token = authService.getToken();
+
+        if (currentUser && token) {
+          // Validiere Token beim Laden - wenn Backend nicht läuft, überspringen
+          try {
+            const isValid = await authService.validateToken();
+            if (isValid) {
+              setUser(currentUser);
+            } else {
+              // Token ungültig, logout
+              authService.logout();
+              setUser(null);
+            }
+          } catch (error) {
+            // Backend nicht erreichbar oder Fehler - nutze gespeicherte Daten
+            console.warn('Token-Validierung fehlgeschlagen, verwende LocalStorage:', error);
+            setUser(currentUser);
+          }
+        }
+      } catch (error) {
+        console.error('Fehler beim Initialisieren der Authentifizierung:', error);
+        authService.logout();
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    initAuth();
   }, []);
 
   const login = async (email, password) => {
     const data = await authService.login(email, password);
-    setUser(data.user);
+    const userData = {
+      id: data.id,
+      email: data.email,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      role: data.role
+    };
+    setUser(userData);
     return data;
   };
 
   const register = async (email, password, firstName, lastName) => {
     const data = await authService.register(email, password, firstName, lastName);
-    setUser(data.user);
-    return data;
-  };
-
-  const loginWithGoogle = async (token) => {
-    const data = await authService.loginWithGoogle(token);
-    setUser(data.user);
-    return data;
-  };
-
-  const loginWithFacebook = async (token) => {
-    const data = await authService.loginWithFacebook(token);
-    setUser(data.user);
-    return data;
-  };
-
-  const loginWithGitHub = async (code) => {
-    const data = await authService.loginWithGitHub(code);
-    setUser(data.user);
+    const userData = {
+      id: data.id,
+      email: data.email,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      role: data.role
+    };
+    setUser(userData);
     return data;
   };
 
@@ -59,15 +82,24 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
   };
 
+  const refreshUser = async () => {
+    try {
+      const userData = await authService.getCurrentUserFromServer();
+      setUser(userData);
+      return userData;
+    } catch (error) {
+      logout();
+      throw error;
+    }
+  };
+
   const value = {
     user,
     loading,
     login,
     register,
-    loginWithGoogle,
-    loginWithFacebook,
-    loginWithGitHub,
     logout,
+    refreshUser,
     isAuthenticated: !!user,
   };
 

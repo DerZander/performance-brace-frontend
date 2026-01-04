@@ -4,10 +4,22 @@ class AuthService {
   // Email/Password Login
   async login(email, password) {
     try {
-      const response = await apiClient.post('/login', { email, password });
+      const response = await apiClient.post('/auth/login', {
+        email,
+        password
+      });
+
       if (response.data.token) {
         localStorage.setItem('authToken', response.data.token);
-        localStorage.setItem('user', JSON.stringify(response.data.user));
+        // Speichere User-Daten ohne Token
+        const userData = {
+          id: response.data.id,
+          email: response.data.email,
+          firstName: response.data.firstName,
+          lastName: response.data.lastName,
+          role: response.data.role
+        };
+        localStorage.setItem('user', JSON.stringify(userData));
       }
       return response.data;
     } catch (error) {
@@ -15,18 +27,27 @@ class AuthService {
     }
   }
 
-  // Email/Password Registrierung
+  // Registrierung
   async register(email, password, firstName, lastName) {
     try {
-      const response = await apiClient.post('/register', {
+      const response = await apiClient.post('/auth/register', {
         email,
         password,
         firstName,
         lastName,
       });
+
       if (response.data.token) {
         localStorage.setItem('authToken', response.data.token);
-        localStorage.setItem('user', JSON.stringify(response.data.user));
+        // Speichere User-Daten ohne Token
+        const userData = {
+          id: response.data.id,
+          email: response.data.email,
+          firstName: response.data.firstName,
+          lastName: response.data.lastName,
+          role: response.data.role
+        };
+        localStorage.setItem('user', JSON.stringify(userData));
       }
       return response.data;
     } catch (error) {
@@ -34,45 +55,31 @@ class AuthService {
     }
   }
 
-  // Google OAuth Login
-  async loginWithGoogle(token) {
+  // Aktuellen User vom Server abrufen
+  async getCurrentUserFromServer() {
     try {
-      const response = await apiClient.post('/google', { token });
-      if (response.data.token) {
-        localStorage.setItem('authToken', response.data.token);
-        localStorage.setItem('user', JSON.stringify(response.data.user));
-      }
-      return response.data;
+      const response = await apiClient.get('/auth/me');
+      const userData = {
+        id: response.data.id,
+        email: response.data.email,
+        firstName: response.data.firstName,
+        lastName: response.data.lastName,
+        role: response.data.role
+      };
+      localStorage.setItem('user', JSON.stringify(userData));
+      return userData;
     } catch (error) {
-      throw error.response?.data?.message || 'Google Login fehlgeschlagen';
+      throw error.response?.data?.message || 'Fehler beim Abrufen der User-Daten';
     }
   }
 
-  // Facebook OAuth Login
-  async loginWithFacebook(token) {
+  // Token validieren
+  async validateToken() {
     try {
-      const response = await apiClient.post('/facebook', { token });
-      if (response.data.token) {
-        localStorage.setItem('authToken', response.data.token);
-        localStorage.setItem('user', JSON.stringify(response.data.user));
-      }
+      const response = await apiClient.get('/auth/validate');
       return response.data;
     } catch (error) {
-      throw error.response?.data?.message || 'Facebook Login fehlgeschlagen';
-    }
-  }
-
-  // GitHub OAuth Login
-  async loginWithGitHub(code) {
-    try {
-      const response = await apiClient.post('/github', { code });
-      if (response.data.token) {
-        localStorage.setItem('authToken', response.data.token);
-        localStorage.setItem('user', JSON.stringify(response.data.user));
-      }
-      return response.data;
-    } catch (error) {
-      throw error.response?.data?.message || 'GitHub Login fehlgeschlagen';
+      return false;
     }
   }
 
@@ -82,7 +89,7 @@ class AuthService {
     localStorage.removeItem('user');
   }
 
-  // Aktuellen User abrufen
+  // Aktuellen User aus LocalStorage abrufen
   getCurrentUser() {
     const userStr = localStorage.getItem('user');
     return userStr ? JSON.parse(userStr) : null;

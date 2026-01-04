@@ -15,7 +15,7 @@ const GitHubCallback = () => {
       const code = searchParams.get('code');
       const state = searchParams.get('state');
       const errorParam = searchParams.get('error');
-
+    
       // Fehler von GitHub
       if (errorParam) {
         setError(`GitHub Login fehlgeschlagen: ${errorParam}`);
@@ -46,7 +46,7 @@ const GitHubCallback = () => {
         setTimeout(() => navigate('/login'), 3000);
       }
     };
-
+    
     handleCallback();
   }, [searchParams, loginWithGitHub, navigate]);
 
