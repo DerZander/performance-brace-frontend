@@ -14,7 +14,9 @@ COPY . .
 
 # Build Arguments für Vite (optional, mit Default)
 ARG VITE_API_URL=http://localhost:8080/api
+ARG VITE_FRONTEND_URL=http://localhost:5173
 ENV VITE_API_URL=${VITE_API_URL}
+ENV VITE_FRONTEND_URL=${VITE_FRONTEND_URL}
 
 # Baue die Anwendung
 RUN npm run build

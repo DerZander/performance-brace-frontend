@@ -1,22 +1,25 @@
 // OAuth Konfiguration für Social Logins
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080/api';
+const FRONTEND_BASE_URL = import.meta.env.VITE_FRONTEND_URL || 'http://localhost:5173';
+
 export const OAUTH_CONFIG = {
   github: {
     clientId: import.meta.env.VITE_GITHUB_CLIENT_ID || 'your_github_client_id',
-    redirectUri: import.meta.env.VITE_GITHUB_REDIRECT_URI || 'http://localhost:5173/auth/github/callback',
+    redirectUri: import.meta.env.VITE_GITHUB_REDIRECT_URI || `${FRONTEND_BASE_URL}/auth/github/callback`,
     scope: 'read:user user:email',
     // authorizeUrl: 'https://github.com/login/oauth/authorize',
-    authorizeUrl: 'http://localhost:8080/api/oauth2/authorization/github',
+    authorizeUrl: `${API_BASE_URL}/oauth2/authorization/github`,
   },
   google: {
     clientId: import.meta.env.VITE_GOOGLE_CLIENT_ID || 'your_google_client_id',
-    redirectUri: import.meta.env.VITE_GOOGLE_REDIRECT_URI || 'http://localhost:5173/auth/google/callback',
+    redirectUri: import.meta.env.VITE_GOOGLE_REDIRECT_URI || `${FRONTEND_BASE_URL}/auth/google/callback`,
     scope: 'profile email',
     authorizeUrl: 'https://accounts.google.com/o/oauth2/v2/auth',
   },
   facebook: {
     clientId: import.meta.env.VITE_FACEBOOK_APP_ID || 'your_facebook_app_id',
-    redirectUri: import.meta.env.VITE_FACEBOOK_REDIRECT_URI || 'http://localhost:5173/auth/facebook/callback',
+    redirectUri: import.meta.env.VITE_FACEBOOK_REDIRECT_URI || `${FRONTEND_BASE_URL}/auth/facebook/callback`,
     scope: 'email,public_profile',
     authorizeUrl: 'https://www.facebook.com/v18.0/dialog/oauth',
   },
