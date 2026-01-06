@@ -6,6 +6,11 @@
   box-sizing: border-box;
 }
 
+html {
+  height: 100%;
+  width: 100%;
+}
+
 body {
   font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
   background-color: $light-gray;
@@ -13,7 +18,10 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden; // Verhindert horizontales Scrollen auf Mobile
+  overflow-x: hidden;
+  min-height: 100%;
+  width: 100%;
+  position: relative;
 }
 
 #root {
