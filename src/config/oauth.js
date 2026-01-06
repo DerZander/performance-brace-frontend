@@ -1,7 +1,28 @@
 // OAuth Konfiguration für Social Logins
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080/api';
-const FRONTEND_BASE_URL = import.meta.env.VITE_FRONTEND_URL || 'http://localhost:5173';
+// Dynamische URL-Erkennung für Plesk-Deployment
+const getBaseUrls = () => {
+  // Prüfe ob wir in einer Browser-Umgebung sind
+  if (typeof window !== 'undefined') {
+    const currentOrigin = window.location.origin;
+
+    // Wenn wir nicht auf localhost sind, verwende die aktuelle Domain
+    if (!currentOrigin.includes('localhost') && !currentOrigin.includes('127.0.0.1')) {
+      return {
+        api: `${currentOrigin}/api`,
+        frontend: currentOrigin
+      };
+    }
+  }
+
+  // Fallback auf Environment-Variablen oder localhost
+  return {
+    api: import.meta.env.VITE_API_URL || 'http://localhost:8080/api',
+    frontend: import.meta.env.VITE_FRONTEND_URL || 'http://localhost:5173'
+  };
+};
+
+const { api: API_BASE_URL, frontend: FRONTEND_BASE_URL } = getBaseUrls();
 
 export const OAUTH_CONFIG = {
   github: {
