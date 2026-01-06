@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Frontend Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+
+        .test-box {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #C1272D;
+        }
+
+        .success {
+            color: green;
+            font-weight: bold;
+        }
+
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: #C1272D;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background: #8B1C1F;
+        }
+
+        pre {
+            background: #f5f5f5;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+<div class="test-box">
+    <h1>🔧 Frontend Diagnose</h1>
+    <p>Diese Seite testet, ob das Frontend-Deployment funktioniert.</p>
+</div>
+
+<div class="test-box">
+    <h2>✅ HTML lädt</h2>
+    <p class="success">Diese Seite ist sichtbar = HTML wird geladen</p>
+</div>
+
+<div class="test-box">
+    <h2>JavaScript Test</h2>
+    <p class="error" id="js-test">JavaScript lädt nicht...</p>
+    <script>
+        document.getElementById('js-test').innerHTML = '<span class="success">✅ JavaScript funktioniert!</span>';
+    </script>
+</div>
+
+<div class="test-box">
+    <h2>Asset-Pfade Test</h2>
+    <p>Prüfe, ob Assets geladen werden können:</p>
+    <div id="asset-test">Teste...</div>
+    <script>
+        // Teste ob assets/index-xxx.js geladen werden kann
+        const testAsset = document.createElement('script');
+        testAsset.onerror = () => {
+            document.getElementById('asset-test').innerHTML = '<span class="error">❌ Assets können nicht geladen werden!</span>';
+        };
+        testAsset.onload = () => {
+            document.getElementById('asset-test').innerHTML = '<span class="success">✅ Assets können geladen werden!</span>';
+        };
+        // Versuche das echte JS zu laden
+        fetch('/assets/index-DaOuS60L.js')
+            .then(response => {
+                if (response.ok) {
+                    document.getElementById('asset-test').innerHTML = '<span class="success">✅ Assets können geladen werden!</span>';
+                } else {
+                    document.getElementById('asset-test').innerHTML = '<span class="error">❌ Assets können nicht geladen werden (Status: ' + response.status + ')</span>';
+                }
+            })
+            .catch(error => {
+                document.getElementById('asset-test').innerHTML = '<span class="error">❌ Fetch Error: ' + error.message + '</span>';
+            });
+    </script>
+</div>
+
+<div class="test-box">
+    <h2>API Test</h2>
+    <button onclick="testAPI()">API testen</button>
+    <div id="api-result" style="margin-top: 10px;"></div>
+    <script>
+        async function testAPI() {
+            const resultDiv = document.getElementById('api-result');
+            resultDiv.innerHTML = 'Teste...';
+
+            try {
+                const response = await fetch('/api/health');
+                if (response.ok) {
+                    const data = await response.text();
+                    resultDiv.innerHTML = '<span class="success">✅ API erreichbar!</span><pre>' + data + '</pre>';
+                } else {
+                    resultDiv.innerHTML = '<span class="error">❌ API antwortet mit Status: ' + response.status + '</span>';
+                }
+            } catch (error) {
+                resultDiv.innerHTML = '<span class="error">❌ API nicht erreichbar: ' + error.message + '</span>';
+            }
+        }
+    </script>
+</div>
+
+<div class="test-box">
+    <h2>Browser Info</h2>
+    <pre id="browser-info"></pre>
+    <script>
+        document.getElementById('browser-info').textContent =
+            'User Agent: ' + navigator.userAgent + '\n' +
+            'URL: ' + window.location.href + '\n' +
+            'Protocol: ' + window.location.protocol + '\n' +
+            'Host: ' + window.location.host;
+    </script>
+</div>
+
+<div class="test-box">
+    <h2>Nächste Schritte</h2>
+    <p>Wenn alle Tests ✅ zeigen, sollte auch die React-App funktionieren.</p>
+    <p>Mögliche Probleme:</p>
+    <ul>
+        <li>Assets können nicht geladen werden → Nginx Konfiguration prüfen</li>
+        <li>API nicht erreichbar → Backend-Verbindung prüfen</li>
+        <li>JavaScript funktioniert nicht → Browser-Kompatibilität prüfen</li>
+    </ul>
+    <button onclick="window.location.href='/'">Zurück zur App</button>
+</div>
+</body>
+</html>
+
