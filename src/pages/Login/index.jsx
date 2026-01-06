@@ -269,6 +269,7 @@ const Login = () => {
           </Paper>
         </Box>
       </Container>
+      <Footer />
     </div>
   );
 };
