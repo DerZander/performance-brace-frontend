@@ -54,7 +54,7 @@ const CreateGroup = () => {
             const unitsData = await unitService.getAllUnits();
             setUnits(unitsData);
         } catch (err) {
-            console.error('Fehler beim Laden der Einheiten:', err);
+            // Fehler ignorieren - Unit-Auswahl ist optional
         }
     };
 
@@ -209,8 +209,7 @@ const CreateGroup = () => {
         e.preventDefault();
         setError('');
         setSuccess('');
-        console.log('Submitting form with data:', formData);
-        console.log('Form data before submission:', formData, members);
+
         if (!formData.name) {
             setError('Bitte geben Sie einen Gruppennamen ein');
             return;
@@ -235,7 +234,7 @@ const CreateGroup = () => {
                 unitId: formData.unitId || null, // Leerer String wird zu null
                 members: cleanedMembers,
             };
-            console.log('Submitting group data:', groupData);
+
             if (isEdit) {
                 await groupService.updateGroup(id, groupData);
                 setSuccess('Gruppe erfolgreich aktualisiert');
