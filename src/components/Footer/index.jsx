@@ -1,7 +1,7 @@
 import React from 'react';
 import {Box, Link, Typography} from '@mui/material';
 
-const Index = () => {
+const Footer = () => {
     return (
         <Box
             component="footer"
@@ -40,4 +40,4 @@ const Index = () => {
     );
 };
 
-export default Index;
+export default Footer;
