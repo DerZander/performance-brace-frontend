@@ -64,6 +64,34 @@
             }
         }
     </style>
+    <script>
+        // Timeout für Lade-Indikator - zeigt Fehlermeldung nach 10 Sekunden
+        setTimeout(() => {
+            const loading = document.querySelector('.app-loading');
+            if (loading && loading.parentElement) {
+                loading.innerHTML = `
+                    <div style="max-width: 600px; text-align: center;">
+                        <h2>⚠️ Laden dauert ungewöhnlich lange</h2>
+                        <p>Die App konnte nicht geladen werden.</p>
+                        <button onclick="location.reload()"
+                                style="padding: 12px 24px; background: white; color: #C1272D;
+                                       border: none; border-radius: 4px; cursor: pointer;
+                                       font-size: 16px; font-weight: 500; margin-top: 20px;">
+                            Seite neu laden
+                        </button>
+                        <p style="margin-top: 20px; font-size: 14px; opacity: 0.8;">
+                            Falls das Problem weiterhin besteht, bitte Browser-Cache leeren.
+                        </p>
+                    </div>
+                `;
+            }
+        }, 10000);
+
+        // Fehlerbehandlung
+        window.addEventListener('error', (e) => {
+            console.error('Loading error:', e);
+        });
+    </script>
 </head>
 <body>
 <div id="root">
