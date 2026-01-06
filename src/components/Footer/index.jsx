@@ -1,12 +1,12 @@
 import React from 'react';
-import { Box, Typography, Link } from '@mui/material';
+import {Box, Link, Typography} from '@mui/material';
 
-const Footer = () => {
+const Index = () => {
     return (
         <Box
             component="footer"
             sx={{
-                p: { xs: 2, sm: 3 },
+                p: {xs: 2, sm: 3},
                 mt: 'auto',
                 backgroundColor: (theme) => theme.palette.mode === 'light' ? '#f5f5f5' : '#1a1a1a',
                 borderTop: '1px solid #e0e0e0',
@@ -19,8 +19,8 @@ const Footer = () => {
                 variant="body2"
                 color="textSecondary"
                 sx={{
-                    fontSize: { xs: '0.75rem', sm: '0.875rem' },
-                    px: { xs: 1, sm: 0 }
+                    fontSize: {xs: '0.75rem', sm: '0.875rem'},
+                    px: {xs: 1, sm: 0}
                 }}
             >
                 © {new Date().getFullYear()}{' '}
@@ -30,7 +30,7 @@ const Footer = () => {
                     rel="noopener noreferrer"
                     underline="hover"
                     color="inherit"
-                    sx={{ fontWeight: 500 }}
+                    sx={{fontWeight: 500}}
                 >
                     zander.digital
                 </Link>
@@ -40,4 +40,4 @@ const Footer = () => {
     );
 };
 
-export default Footer;
+export default Index;
