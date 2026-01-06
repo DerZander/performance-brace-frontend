@@ -1,6 +1,22 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080/api';
+// Dynamische URL-Erkennung für Plesk-Deployment
+const getApiBaseUrl = () => {
+  // Prüfe ob wir in einer Browser-Umgebung sind
+  if (typeof window !== 'undefined') {
+    const currentOrigin = window.location.origin;
+
+    // Wenn wir nicht auf localhost sind, verwende die aktuelle Domain
+    if (!currentOrigin.includes('localhost') && !currentOrigin.includes('127.0.0.1')) {
+      return `${currentOrigin}/api`;
+    }
+  }
+
+  // Fallback auf Environment-Variable oder localhost
+  return import.meta.env.VITE_API_URL || 'http://localhost:8080/api';
+};
+
+const API_BASE_URL = getApiBaseUrl();
 
 const apiClient = axios.create({
   baseURL: API_BASE_URL,

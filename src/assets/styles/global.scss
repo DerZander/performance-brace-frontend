@@ -13,10 +13,13 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden; // Verhindert horizontales Scrollen auf Mobile
 }
 
 #root {
   min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 // Scrollbar Styling
@@ -32,7 +35,7 @@ body {
 ::-webkit-scrollbar-thumb {
   background: $medium-gray;
   border-radius: $border-radius-sm;
-  
+
   &:hover {
     background: $dark-gray;
   }
@@ -43,26 +46,61 @@ body {
   max-width: 1200px;
   margin: 0 auto;
   padding: $spacing-lg;
+
+  @media (max-width: 768px) {
+    padding: $spacing-md;
+  }
+
+  @media (max-width: 480px) {
+    padding: $spacing-sm;
+  }
 }
 
 .page-header {
   background: linear-gradient(135deg, $fire-red 0%, $fire-red-dark 100%);
   color: $white;
-  padding: $spacing-xl;
-  margin-bottom: $spacing-lg;
+  padding: $spacing-md;
+  margin-bottom: $spacing-sm;
   border-radius: $border-radius-md;
   box-shadow: $shadow-md;
-  
+
+  @media (max-width: 768px) {
+    padding: $spacing-sm;
+    margin-bottom: $spacing-xs;
+    border-radius: $border-radius-sm;
+  }
+
+  @media (max-width: 480px) {
+    padding: $spacing-xs;
+  }
+
   h1 {
-    margin-bottom: $spacing-sm;
-    font-size: 2.5rem;
+    margin-bottom: 0;
+    font-size: 1.75rem;
     font-weight: 700;
     color: $white;
+
+    @media (max-width: 768px) {
+      font-size: 1.5rem;
+    }
+
+    @media (max-width: 480px) {
+      font-size: 1.25rem;
+    }
   }
-  
+
   p {
-    font-size: 1.1rem;
+    font-size: 0.875rem;
     opacity: 0.9;
+    margin-bottom: 0;
+
+    @media (max-width: 768px) {
+      font-size: 0.8rem;
+    }
+
+    @media (max-width: 480px) {
+      font-size: 0.75rem;
+    }
   }
 }
 
@@ -71,6 +109,11 @@ body {
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: $spacing-lg;
   margin-top: $spacing-lg;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: $spacing-md;
+  }
 }
 
 .fire-badge {
@@ -87,20 +130,53 @@ body {
   text-align: center;
 }
 
-.mt-sm { margin-top: $spacing-sm; }
-.mt-md { margin-top: $spacing-md; }
-.mt-lg { margin-top: $spacing-lg; }
-.mt-xl { margin-top: $spacing-xl; }
+.mt-sm {
+  margin-top: $spacing-sm;
+}
 
-.mb-sm { margin-bottom: $spacing-sm; }
-.mb-md { margin-bottom: $spacing-md; }
-.mb-lg { margin-bottom: $spacing-lg; }
-.mb-xl { margin-bottom: $spacing-xl; }
+.mt-md {
+  margin-top: $spacing-md;
+}
 
-.p-sm { padding: $spacing-sm; }
-.p-md { padding: $spacing-md; }
-.p-lg { padding: $spacing-lg; }
-.p-xl { padding: $spacing-xl; }
+.mt-lg {
+  margin-top: $spacing-lg;
+}
+
+.mt-xl {
+  margin-top: $spacing-xl;
+}
+
+.mb-sm {
+  margin-bottom: $spacing-sm;
+}
+
+.mb-md {
+  margin-bottom: $spacing-md;
+}
+
+.mb-lg {
+  margin-bottom: $spacing-lg;
+}
+
+.mb-xl {
+  margin-bottom: $spacing-xl;
+}
+
+.p-sm {
+  padding: $spacing-sm;
+}
+
+.p-md {
+  padding: $spacing-md;
+}
+
+.p-lg {
+  padding: $spacing-lg;
+}
+
+.p-xl {
+  padding: $spacing-xl;
+}
 
 // Animations
 @keyframes fadeIn {
