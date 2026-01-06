@@ -227,6 +227,16 @@ const ViewGroup = () => {
                       </Box>
 
                       <Stack spacing={1.5}>
+                        {member.unit && (
+                          <Box display="flex" alignItems="center" gap={1}>
+                            <GroupIcon fontSize="small" color="action" />
+                            <Typography variant="body2" color="textSecondary">
+                              <strong>Einheit:</strong> {member.unit.name}
+                              {member.unit.city && ` - ${member.unit.city}`}
+                            </Typography>
+                          </Box>
+                        )}
+
                         {member.dateOfBirth && (
                           <Box display="flex" alignItems="center" gap={1}>
                             <Cake fontSize="small" color="action" />

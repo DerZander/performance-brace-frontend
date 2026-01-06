@@ -1,8 +1,7 @@
 @use '../variables.scss' as *;
 
 .dashboard-page {
-  min-height: 100vh;
-  padding: $spacing-xl 0;
+  padding: $spacing-sm 0;
   background: $light-gray;
 }
 
@@ -13,7 +12,7 @@
 
   .action-button {
     box-shadow: $shadow-md;
-    
+
     &:hover {
       transform: translateY(-2px);
       box-shadow: $shadow-lg;
@@ -56,15 +55,15 @@
 }
 
 .members-container {
-  padding: $spacing-lg;
+  padding: $spacing-md;
   background: linear-gradient(135deg, rgba(193, 39, 45, 0.03) 0%, rgba(255, 193, 7, 0.03) 100%);
   border-radius: $border-radius-md;
-  margin: $spacing-md 0;
+  margin: $spacing-sm 0;
 
   .members-title {
     color: $fire-red;
     font-weight: 600;
-    margin-bottom: $spacing-md;
+    margin-bottom: $spacing-sm;
     display: flex;
     align-items: center;
     gap: $spacing-sm;
@@ -107,7 +106,7 @@
 .empty-state {
   text-align: center;
   padding: $spacing-xxl;
-  
+
   .empty-icon {
     font-size: 6rem;
     color: $medium-gray;

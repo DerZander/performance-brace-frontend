@@ -101,20 +101,29 @@ const Login = () => {
   return (
     <div className="login-page">
       <Container maxWidth="sm">
-        <Box className="login-container">
-          <Paper elevation={3} className="login-paper">
-            <Box className="login-header">
-              <LocalFireDepartment className="fire-icon" />
-              <Typography variant="h4" component="h1" className="login-title">
+        <Box className="login-container" sx={{ px: { xs: 2, sm: 0 }, py: { xs: 2, sm: 4 } }}>
+          <Paper elevation={3} className="login-paper" sx={{ p: { xs: 3, sm: 4 } }}>
+            <Box className="login-header" sx={{ mb: { xs: 2, sm: 3 } }}>
+              <LocalFireDepartment className="fire-icon" sx={{ fontSize: { xs: 40, sm: 50 } }} />
+              <Typography
+                variant="h4"
+                component="h1"
+                className="login-title"
+                sx={{ fontSize: { xs: '1.5rem', sm: '2rem' } }}
+              >
                 Leistungsspange 2026
               </Typography>
-              <Typography variant="body1" className="login-subtitle">
+              <Typography
+                variant="body1"
+                className="login-subtitle"
+                sx={{ fontSize: { xs: '0.875rem', sm: '1rem' } }}
+              >
                 Bedburg Feuerwehr
               </Typography>
             </Box>
 
             {error && (
-              <Alert severity="error" className="login-alert">
+              <Alert severity="error" className="login-alert" sx={{ mb: 2 }}>
                 {error}
               </Alert>
             )}
@@ -130,6 +139,7 @@ const Login = () => {
                     onChange={handleChange}
                     required
                     variant="outlined"
+                    size="medium"
                   />
                   <TextField
                     fullWidth
@@ -139,12 +149,13 @@ const Login = () => {
                     onChange={handleChange}
                     required
                     variant="outlined"
+                    size="medium"
                   />
                 </Stack>
               )}
 
               {isRegister && (
-                <FormControl fullWidth variant="outlined">
+                <FormControl fullWidth variant="outlined" size="medium">
                   <InputLabel>Einheit (optional)</InputLabel>
                   <Select
                     name="unitId"
@@ -178,6 +189,7 @@ const Login = () => {
                 onChange={handleChange}
                 required
                 variant="outlined"
+                size="medium"
                 helperText={isRegister ? "Gültige E-Mail-Adresse" : ""}
                 InputProps={{
                   startAdornment: (
@@ -197,6 +209,7 @@ const Login = () => {
                 onChange={handleChange}
                 required
                 variant="outlined"
+                size="medium"
                 helperText={isRegister ? "Mindestens 6 Zeichen" : ""}
                 InputProps={{
                   startAdornment: (
@@ -225,6 +238,7 @@ const Login = () => {
                 size="large"
                 disabled={loading}
                 className="submit-button"
+                sx={{ mt: 2, mb: 1 }}
               >
                 {loading ? 'Bitte warten...' : isRegister ? 'Registrieren' : 'Anmelden'}
               </Button>
@@ -245,6 +259,7 @@ const Login = () => {
                   });
                 }}
                 className="toggle-button"
+                sx={{ fontSize: { xs: '0.875rem', sm: '1rem' } }}
               >
                 {isRegister
                   ? 'Bereits registriert? Jetzt anmelden'
